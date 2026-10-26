@@ -36,8 +36,10 @@ Sample weekly lineup times are expressed in UTC and repeat each week. They are n
 
 ## Release radar
 
-Search by title and format, or use a franchise shortcut. Enable **Upcoming only** to hide past releases. Results come directly from `https://api.jikan.moe/v4/anime` (up to 25 matches per query) and are cached in memory for five minutes. The API is public, unofficial, and requires no key. Network errors, rate limits, empty results, and unknown dates have explicit UI states.
+Search by title and format, or use a franchise shortcut. Enable **Upcoming only** to hide past releases. Results first use `https://api.jikan.moe/v4/anime`. If that request fails or times out, the app tries the public AniList GraphQL API at `https://graphql.anilist.co`. Each request has an eight-second timeout. Results (up to 25 per query) are cached in memory for five minutes. Successful empty searches do not trigger a fallback. Neither provider requires an API key for these public searches. The interface, source links, and calendar exports identify the provider that returned the results. Network errors, rate limits, empty results, and unknown dates have explicit UI states.
 
 Release dates generally refer to the Japanese premiere. They do not establish a US theater screening, streaming-service release, or local showtime. Broadcast slots are displayed in their source timezone only when the API supplies a day, time, and timezone; no next-episode instant is guessed. Partial dates remain partial. Calendar downloads are all-day `.ics` events only for complete release dates, not timed cinema bookings. Check linked MyAnimeList pages and official announcements before making plans.
 
-Restricted cloud environments must allow `api.jikan.moe` for live lookups. Saving the allowlist draft does not apply it to the running machine; review/save the network setting before live validation. The rest of the app works without that service.
+Restricted cloud environments must allow `api.jikan.moe` and `graphql.anilist.co` for live lookups and backup access. Saving the allowlist draft does not apply it to the running machine; review/save the network setting before live validation. The rest of the app works without that service.
+
+Live connectivity is still unverified in the onboarding cloud: Jikan returned an upstream timeout and AniList was denied by the network policy. Tests cover provider failures and fallback using mock responses; they do not establish live service availability.
